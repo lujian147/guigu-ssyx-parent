@@ -27,7 +27,11 @@
 
 <!--    //1.根据userId获取用户全部优惠卷-->
     <select id="selectCartCouponInfoList" resultMap="CouponInfoMap">
-        select  *
+        select  info.id,info.coupon_type,info.coupon_name,info.amount,
+                info.condition_amount,info.start_time,info.end_time,
+                info.range_type,info.range_desc,info.publish_count,info.per_limit,
+                info.use_count,info.receive_count,info.expire_time,info.publish_status,
+                info.create_time,info.update_time,info.is_deleted,cuse.coupon_status
         from coupon_use cuse
         inner join coupon_info info on cuse.coupon_id = info.id
         <where>
