@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,20 +67,37 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         // coupon_user coupon_info
         List<CouponInfo> userAllCouponInfoList = baseMapper.selectCartCouponInfoList(userId);
         //2.从第一步返回list集合中，获取所有优惠卷id列表
-
+        if (CollectionUtils.isEmpty(userAllCouponInfoList)){
+            return new ArrayList<CouponInfo>();
+        }
+        List<Long> couponIdList = userAllCouponInfoList.stream()
+                .map(couponInfo -> couponInfo.getId())
+                .collect(Collectors.toList());
         //3.查询优惠卷对应的范围 coupon_range
         //couponRangeList
-
-
+        LambdaQueryWrapper<CouponRange> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(CouponRange::getCouponId,couponIdList);
+        List<CouponRange> couponRangeList = couponRangeMapper.selectList(queryWrapper);
         //4.获取优惠卷id对应的skuId列表
         //优惠卷id进行分组,得到map集合
         //Map<Long,List<Long>>
-
+        Map<Long,List<Long>> couponIdToSkuIdMap = this.findCouponIdToSkuIdMap(cartInfoList,couponRangeList);
         //5.遍历全部优惠卷集合，判断优惠卷类型
         //全场通用，sku和分类
 
         //6.返回List<CouponInfo>
         return null;
+    }
+
+    //4.获取优惠卷id对应的skuId列表
+    //优惠卷id进行分组,得到map集合
+
+    private Map<Long, List<Long>> findCouponIdToSkuIdMap(List<CartInfo> cartInfoList, List<CouponRange> couponRangeList) {
+        Map<Long, List<Long>> couponIdToSkuIdMap = new HashMap<>();
+         //couponRangeList数据处理，根据优惠卷id分组
+        Map<Long, List<CouponRange>> couponRangeToRangeListMap = couponRangeList.stream().
+                collect(Collectors.groupingBy(couponRange -> couponRange.getCouponId()));
+        return couponIdToSkuIdMap;
     }
 
     @Override
