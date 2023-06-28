@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.ssyx.activity.mapper.ActivityInfoMapper">
+
+    <resultMap id="ActivityRuleMap" type="com.atguigu.ssyx.model.activity.ActivityRule" autoMapping="true"></resultMap>
+    <resultMap id="CouponInfoMap" type="com.atguigu.ssyx.model.activity.CouponInfo" autoMapping="true"></resultMap>
+
+
+<!--    //2.根据所有的skuId获取参与活动-->
+    <select id="selectCartActivity" resultMap="ActivityRuleMap">
+        SELECT
+            info.id as activityId
+            sku.sku_id as skuId
+        FROM activity_info info
+                 INNER JOIN activity_sku sku ON info.id = sku.activity_id
+        <where>
+            and sku.sku_id IN 
+            <foreach collection="skuIdList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+          AND NOW() BETWEEN info.start_time AND info.end_time
+    </select>
+<!--    //2.根据skuId和userId获取优惠卷信息-->
+    <select id="findCouponInfoList" resultMap="CouponInfoMap">
+        SELECT info.id,info.coupon_type,info.coupon_name,info.amount,
+               info.condition_amount,info.start_time,info.end_time,
+               info.range_type,info.range_desc,info.publish_count,
+               info.per_limit,info.use_count,info.receive_count,
+               info.expire_time,info.publish_status,info.create_time,
+               info.update_time,info.is_deleted,cuse.coupon_status
+        FROM coupon_info info
+                 LEFT JOIN coupon_range crange ON info.id = crange.coupon_id
+                 LEFT JOIN coupon_use cuse ON info.id = cuse.coupon_id and cuse.user_id = #{userId}
+        WHERE
+            (
+                    info.range_type = 1
+                    OR(info.range_type = 2 AND crange.range_id = #{skuId})
+                    OR(info.range_type = 3 AND crange.range_id = #{categoryId})
+            )
+        AND NOW() BETWEEN info.start_time AND end_time
+        ORDER BY info.amount DESC
+    </select>
+
+<!--    //2.根据skuId进行查询，查询sku对应活动里面的规则列表-->
+    <select id="findActivityRule" resultMap="ActivityRuleMap">
+        SELECT info.activity_type as activityType,
+               rule.id,rule.activity_id,rule.condition_amount,
+               rule.condition_num,rule.benefit_amount,rule.benefit_discount
+        FROM activity_info info
+                 INNER JOIN activity_sku sku ON info.id = sku.activity_id
+                 INNER JOIN activity_rule rule ON info.id = rule.activity_id
+        WHERE sku.sku_id = #{skuId}
+          AND NOW() BETWEEN info.start_time AND info.end_time
+        ORDER BY rule.condition_amount DESC
+    </select>
+<!--    如果之前参加过，活动正在进行中，排除商品-->
+
+    <select id="selectSkuIdListExist" resultType="Long" >
+        select *
+        from activity_info info
+        inner join activity_sku sku on info.id = sku.activity_id
+        <where>
+            <if test="skuIdList != null">
+                and sku.sku_id in
+                    <foreach collection="skuIdList" item="item" index="index" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+            </if>
+        </where>
+        and now() between info.start_time and info.end_time
+    </select>
+
+
+
+
+</mapper>
