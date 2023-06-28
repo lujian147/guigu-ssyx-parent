@@ -8,6 +8,7 @@ import com.atguigu.ssyx.model.order.CartInfo;
 import com.atguigu.ssyx.vo.order.OrderConfirmVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,34 @@ public class CartApiController {
     private ActivityFeignClient activityFeignClient;
 
 
+    //根据skuId选中
+    @GetMapping("checkCart/{skuId}/{isChecked}")
+    public Result checkCart(@PathVariable(value = "skuId") Long skuId,
+                            @PathVariable Integer isChecked){
+        //获取用户id
+        Long userId = AuthContextHolder.getUserId();
+        cartInfoService.checkCart(userId,skuId,isChecked);
+        return Result.ok(null);
+    }
+    //全选
+    @GetMapping("checkAllCart/{isChecked}")
+    public Result checkAllCart(@PathVariable(value = "isChecked") Integer isChecked) {
+        // 获取用户Id
+        Long userId = AuthContextHolder.getUserId();
+        // 调用更新方法
+        cartInfoService.checkAllCart(userId, isChecked);
+        return Result.ok(null);
+    }
+    //批量选中
+    @ApiOperation(value="批量选择购物车")
+    @PostMapping("batchCheckCart/{isChecked}")
+    public Result batchCheckCart(@RequestBody List<Long> skuIdList,
+                                 @PathVariable(value = "isChecked") Integer isChecked){
+        // 如何获取userId
+        Long userId = AuthContextHolder.getUserId();
+        cartInfoService.batchCheckCart(skuIdList, userId, isChecked);
+        return Result.ok(null);
+    }
     //添加商品到购物车
     //添加内容：当前登录用户id,商品id,商品数量num
     @ApiOperation("添加商品到购物车")

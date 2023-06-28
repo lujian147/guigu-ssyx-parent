@@ -16,7 +16,7 @@ public class CodeGet {
         // 2、全局配置
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("F:\\javacode\\ssyx\\guigu-ssyx-parent\\service\\service-activity"+"/src/main/java");
+        gc.setOutputDir("F:\\javacode\\ssyx\\guigu-ssyx-parent\\service\\service-order"+"/src/main/java");
 
         gc.setServiceName("%sService");	//去掉Service接口的首字母I
         gc.setAuthor("atguigu");
@@ -25,7 +25,7 @@ public class CodeGet {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/shequ-activity?serverTimezone=GMT%2B8&useSSL=false");
+        dsc.setUrl("jdbc:mysql://localhost:3306/shequ-order?serverTimezone=GMT%2B8&useSSL=false");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
@@ -35,7 +35,7 @@ public class CodeGet {
         // 4、包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent("com.atguigu.ssyx");
-        pc.setModuleName("activity"); //模块名
+        pc.setModuleName("order"); //模块名
         pc.setController("controller");
         pc.setService("service");
         pc.setMapper("mapper");
@@ -45,7 +45,7 @@ public class CodeGet {
         StrategyConfig strategy = new StrategyConfig();
 
         //添加表
-        strategy.setInclude("activity_info","activity_rule","activity_sku","coupon_info","coupon_range","coupon_use");
+        strategy.setInclude("order_info","order_item");
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
 

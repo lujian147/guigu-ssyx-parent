@@ -152,11 +152,53 @@ public class CartInfoServiceImpl implements CartInfoService {
         return cartInfoList;
     }
 
+    @Override
+    public void checkCart(Long userId, Long skuId, Integer isChecked) {
+        //获取redis中的key
+        String cartKey = this.getCartKey(userId);
+        //根据cartKey获得key-value
+        BoundHashOperations<String,String,CartInfo> boundHashOperations = redisTemplate.boundHashOps(cartKey);
+        //根据field(skuId)获取value(cartInfo)
+        CartInfo cartInfo = boundHashOperations.get(skuId.toString());
+        if (cartInfo != null){
+            cartInfo.setIsChecked(isChecked);
+            //更新
+            boundHashOperations.put(skuId.toString(),cartInfo);
+            //设置key过期时间
+            this.setCartKeyExpire(cartKey);
+        }
+    }
+
+    //全选
+    @Override
+    public void checkAllCart(Long userId, Integer isChecked) {
+        String cartKey = this.getCartKey(userId);
+        BoundHashOperations<String,String,CartInfo> boundHashOperations = redisTemplate.boundHashOps(cartKey);
+        List<CartInfo> cartInfoList = boundHashOperations.values();
+        cartInfoList.forEach(cartInfo -> {
+            cartInfo.setIsChecked(isChecked);
+            boundHashOperations.put(cartInfo.getSkuId().toString(),cartInfo);
+        });
+        this.setCartKeyExpire(cartKey);
+    }
+
+    //批量选中
+    @Override
+    public void batchCheckCart(List<Long> skuIdList, Long userId, Integer isChecked) {
+        String cartKey = this.getCartKey(userId);
+        BoundHashOperations<String,String,CartInfo> boundHashOperations = redisTemplate.boundHashOps(cartKey);
+        skuIdList.forEach(skuId -> {
+            CartInfo cartInfo = boundHashOperations.get(skuId.toString());
+            cartInfo.setIsChecked(isChecked);
+            boundHashOperations.put(cartInfo.getSkuId().toString(),cartInfo);
+        });
+        this.setCartKeyExpire(cartKey);
+    }
+
     //设置key过期时间
     private void setCartKeyExpire(String key){
         redisTemplate.expire(key,RedisConst.USER_CART_EXPIRE, TimeUnit.SECONDS);
     }
-
 
 
 }

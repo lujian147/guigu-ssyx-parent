@@ -4,10 +4,10 @@
 
     <resultMap id="ActivityRuleMap" type="com.atguigu.ssyx.model.activity.ActivityRule" autoMapping="true"></resultMap>
     <resultMap id="CouponInfoMap" type="com.atguigu.ssyx.model.activity.CouponInfo" autoMapping="true"></resultMap>
-
+    <resultMap id="ActivitySkuMap" type="com.atguigu.ssyx.model.activity.ActivitySku" autoMapping="true"></resultMap>
 
 <!--    //2.根据所有的skuId获取参与活动-->
-    <select id="selectCartActivity" resultMap="ActivityRuleMap">
+    <select id="selectCartActivity" resultMap="ActivitySkuMap">
         SELECT
             info.id as activityId
             sku.sku_id as skuId

@@ -16,6 +16,7 @@
         <module name="service-sys" />
         <module name="service-user-client" />
         <module name="service-util" />
+        <module name="service-order" />
         <module name="service-activity-client" />
         <module name="service-acl" />
         <module name="service-product" />
@@ -38,6 +39,7 @@
       <module name="service-cart" options="-parameters" />
       <module name="service-gateway" options="-parameters" />
       <module name="service-home" options="-parameters" />
+      <module name="service-order" options="-parameters" />
       <module name="service-product" options="-parameters" />
       <module name="service-product-client" options="-parameters" />
       <module name="service-search" options="-parameters" />
