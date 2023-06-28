@@ -84,17 +84,36 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
         List<CartInfoVo> cartInfoVoList = this.findCartActivityList(cartInfoList);
 
         //2.计算商品参与活动之后最终的金额是多少
-
+        BigDecimal activityReduceAmount = cartInfoVoList.stream()
+                .filter(cartInfoVo -> cartInfoVo.getActivityRule() != null)
+                .map(cartInfoVo -> cartInfoVo.getActivityRule().getReduceAmount())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         //3.获取购物车里面可用的优惠卷列表
-
+        List<CouponInfo> couponInfoList = couponInfoService.findCartCouponInfo(cartInfoList,userId);//TODO
         //4。计算商品使用优惠卷之后的金额是多少，只能使用一张优惠卷
-
+        BigDecimal couponReduceAmount = new BigDecimal(0);
+        if (!CollectionUtils.isEmpty(couponInfoList)){
+            couponReduceAmount = couponInfoList.stream()
+                    .filter(couponInfo -> couponInfo.getIsOptimal().intValue() == 1)
+                    .map(couponInfo -> couponInfo.getAmount())
+                    .reduce(BigDecimal.ZERO,BigDecimal::add);
+        }
         //5.计算没有参与活动，没有使用优惠卷原始金额
-
-        //6.参与活动，使用优惠卷总金额
-
+        BigDecimal originalTotalAmount = cartInfoList.stream()
+                .filter(cartInfo -> cartInfo.getIsChecked() == 1)
+                .map(cartInfo -> cartInfo.getCartPrice().multiply(new BigDecimal(cartInfo.getSkuNum())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        //6.参与活动，使用优惠卷总金额,最终金额
+        BigDecimal totalAmount = originalTotalAmount.subtract(activityReduceAmount).subtract(couponReduceAmount);
         //7.封装需要数据到OrderConfirmVo，返回
-        return null;
+        OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
+        orderConfirmVo.setCarInfoVoList(cartInfoVoList);
+        orderConfirmVo.setActivityReduceAmount(activityReduceAmount);
+        orderConfirmVo.setCarInfoVoList(cartInfoVoList);
+        orderConfirmVo.setCouponReduceAmount(couponReduceAmount);
+        orderConfirmVo.setOriginalTotalAmount(originalTotalAmount);
+        orderConfirmVo.setTotalAmount(totalAmount);
+        return orderConfirmVo;
     }
 
     //获取购物车对应规则数据

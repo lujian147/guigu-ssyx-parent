@@ -11,6 +11,7 @@ import com.atguigu.ssyx.enums.CouponRangeType;
 import com.atguigu.ssyx.model.activity.CouponInfo;
 import com.atguigu.ssyx.model.activity.CouponRange;
 import com.atguigu.ssyx.model.activity.CouponUse;
+import com.atguigu.ssyx.model.order.CartInfo;
 import com.atguigu.ssyx.model.product.Category;
 import com.atguigu.ssyx.model.product.SkuInfo;
 import com.atguigu.ssyx.vo.activity.CouponRuleVo;
@@ -56,6 +57,29 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         //2.根据条件查询 skuId，分类id,userId
         List<CouponInfo> couponInfoList = baseMapper.findCouponInfoList(skuId,skuInfo.getCategoryId(),userId);
         return couponInfoList;
+    }
+
+    //3.获取购物车里面可用的优惠卷列表
+    @Override
+    public List<CouponInfo> findCartCouponInfo(List<CartInfo> cartInfoList, Long userId) {
+        //1.根据userId获取用户全部优惠卷
+        // coupon_user coupon_info
+        List<CouponInfo> userAllCouponInfoList = baseMapper.selectCartCouponInfoList(userId);
+        //2.从第一步返回list集合中，获取所有优惠卷id列表
+
+        //3.查询优惠卷对应的范围 coupon_range
+        //couponRangeList
+
+
+        //4.获取优惠卷id对应的skuId列表
+        //优惠卷id进行分组,得到map集合
+        //Map<Long,List<Long>>
+
+        //5.遍历全部优惠卷集合，判断优惠卷类型
+        //全场通用，sku和分类
+
+        //6.返回List<CouponInfo>
+        return null;
     }
 
     @Override

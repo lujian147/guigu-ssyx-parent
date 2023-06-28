@@ -24,4 +24,16 @@
           AND NOW() BETWEEN info.start_time AND end_time
         ORDER BY info.amount DESC
     </select>
+
+<!--    //1.根据userId获取用户全部优惠卷-->
+    <select id="selectCartCouponInfoList" resultMap="CouponInfoMap">
+        select  *
+        from coupon_use cuse
+        inner join coupon_info info on cuse.coupon_id = info.id
+        <where>
+            and cuse.user_id = #{userId}
+            and info.expire_time >= now()
+        </where>
+        order by info.amount desc
+    </select>
 </mapper>

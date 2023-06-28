@@ -24,4 +24,8 @@ public interface CouponInfoMapper extends BaseMapper<CouponInfo> {
     List<CouponInfo> findCouponInfoList(@Param("skuId") Long skuId,
                                         @Param("categoryId") Long categoryId,
                                         @Param("userId") Long userId);
+
+
+    //1.根据userId获取用户全部优惠卷
+    List<CouponInfo> selectCartCouponInfoList(@Param(("userId")) Long userId);
 }
