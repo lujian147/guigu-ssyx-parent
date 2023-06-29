@@ -27,24 +27,24 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="spring" />
+      <option name="name" value="spring" />
+      <option name="url" value="http://localhost:8081/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="nexus-aliyun" />
       <option name="name" value="Nexus aliyun" />
       <option name="url" value="https://maven.aliyun.com/repository/public" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="spring" />
-      <option name="name" value="spring" />
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
       <option name="url" value="http://localhost:8081/repository/maven-public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="spring" />
       <option name="name" value="spring" />
       <option name="url" value="https://maven.aliyun.com/repository/spring" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="central" />
-      <option name="name" value="Central Repository" />
-      <option name="url" value="http://localhost:8081/repository/maven-public/" />
     </remote-repository>
   </component>
 </project>

@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31f0864f-e627-4dc5-a206-83d0b8d0e201" name="变更" comment="添加订单管理模块">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/_2023_6_28_17_15____.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/_2023_6_28_18_33____.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/___.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/___1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/在变基之前未提交的更改_[变更]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/在变基之前未提交的更改_[变更]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/在进行合并之前于_2023_6_28_18_33_取消提交了变更_[变更]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2023_6_28_17_15_取消提交了变更_[变更]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/common/service-util/src/main/java/com/atguigu/ssyx/common/config/RedissonConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-client/service-cart-client/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-client/service-cart-client/src/main/java/com/atguigu/ssyx/client/cart/CartFeignClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/service-client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/service-cart/src/main/java/com/atguigu/ssyx/cart/controller/CartApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/service-cart/src/main/java/com/atguigu/ssyx/cart/controller/CartApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/service-cart/src/main/java/com/atguigu/ssyx/cart/service/CartInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/service-cart/src/main/java/com/atguigu/ssyx/cart/service/CartInfoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/service-cart/src/main/java/com/atguigu/ssyx/cart/service/impl/CartInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/service-cart/src/main/java/com/atguigu/ssyx/cart/service/impl/CartInfoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/service-order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/service/service-order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/service-order/src/main/java/com/atguigu/ssyx/order/controller/OrderInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/service-order/src/main/java/com/atguigu/ssyx/order/controller/OrderInfoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/service-order/src/main/java/com/atguigu/ssyx/order/service/impl/OrderInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/service-order/src/main/java/com/atguigu/ssyx/order/service/impl/OrderInfoServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +46,11 @@
         <option name="useMavenConfig" value="true" />
         <option name="userSettingsFile" value="E:\maven\apache-maven-3.8.6\conf\settings.xml" />
       </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
     </option>
   </component>
   <component name="ProjectId" id="2RUob0YOu47yGbUMAj74HZX06nj" />
@@ -193,7 +196,7 @@
       <workItem from="1687847675232" duration="4036000" />
       <workItem from="1687879998592" duration="2123000" />
       <workItem from="1687964060990" duration="4611000" />
-      <workItem from="1688003214554" duration="313000" />
+      <workItem from="1688003214554" duration="917000" />
     </task>
     <task id="LOCAL-00001" summary="添加订单管理模块">
       <created>1687968667651</created>
@@ -202,7 +205,21 @@
       <option name="project" value="LOCAL" />
       <updated>1687968667651</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="添加订单管理模块">
+      <created>1688003598080</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688003598080</updated>
+    </task>
+    <task id="LOCAL-00003" summary="添加订单管理模块">
+      <created>1688003857787</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1688003857787</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

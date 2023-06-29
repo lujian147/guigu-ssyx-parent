@@ -88,7 +88,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             throw new SsyxException(ResultCodeEnum.ILLEGAL_REQUEST);
         }
         //3.2 拿着orderNo到redis进行查询
-        String script = "";
+        String script = "if(redis.call('get', KEYS[1]) == ARGV[1]) then return redis.call('del', KEYS[1]) else return 0 end";
         //3.3 如果redis有相同得orderNo,表示正常提交 ，把redis中得orderNo删除
         Boolean flag = (Boolean) redisTemplate.execute(new DefaultRedisScript(script, Boolean.class),
                 Arrays.asList(RedisConst.ORDER_REPEAT + orderNo), orderNo);
