@@ -5,6 +5,7 @@ import com.atguigu.ssyx.model.product.SkuInfo;
 import com.atguigu.ssyx.product.service.CategoryService;
 import com.atguigu.ssyx.product.service.SkuInfoService;
 import com.atguigu.ssyx.vo.product.SkuInfoVo;
+import com.atguigu.ssyx.vo.product.SkuStockLockVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.License;
@@ -82,5 +83,14 @@ public class ProductInnnerController {
     @GetMapping("inner/getSkuInfoVo/{skuId}")
     public SkuInfoVo getSkuInfoVo(@PathVariable Long skuId){
         return skuInfoService.getSkuInfoVo(skuId);
+    }
+
+
+    //锁定仓库
+    @ApiOperation(value = "锁定库存")
+    @PostMapping("inner/checkAndLock/{orderNo}")
+    public Boolean checkAndLock(@RequestBody List<SkuStockLockVo> skuStockLockVoList,
+                                @PathVariable String orderNo){
+        return skuInfoService.checkAndLock(skuStockLockVoList,orderNo);
     }
 }

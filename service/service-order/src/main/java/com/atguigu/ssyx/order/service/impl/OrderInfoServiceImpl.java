@@ -2,6 +2,7 @@ package com.atguigu.ssyx.order.service.impl;
 
 import com.atguigu.ssyx.client.activity.ActivityFeignClient;
 import com.atguigu.ssyx.client.cart.CartFeignClient;
+import com.atguigu.ssyx.client.product.ProductFeignClient;
 import com.atguigu.ssyx.client.user.UserFeignClient;
 import com.atguigu.ssyx.common.auth.AuthContextHolder;
 import com.atguigu.ssyx.common.constant.RedisConst;
@@ -53,6 +54,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Autowired
     private ActivityFeignClient activityFeignClient;
+
+    @Autowired
+    private ProductFeignClient productFeignClient;
 //    确认订单
     @Override
     public OrderConfirmVo confirmOrder() {
@@ -113,10 +117,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 skuStockLockVo.setSkuNum(item.getSkuNum());
                 return skuStockLockVo;
             }).collect(Collectors.toList());
-        }
-        //4.4 远程调用service-product模块实现商品锁定
-        ////验证库存并锁定库存，保证具备原子性
 
+            //4.4 远程调用service-product模块实现商品锁定
+            ////验证库存并锁定库存，保证具备原子性
+            Boolean isLockSuccess = productFeignClient.checkAndLock(commonStockLockVoList, orderNo);
+            if (!isLockSuccess){//库存锁定失败
+                throw new SsyxException(ResultCodeEnum.ORDER_STOCK_FALL);
+            }
+        }
 
         //5. 下单过程
         //5.1 向两张表中添加数据 order_info 和order_item
