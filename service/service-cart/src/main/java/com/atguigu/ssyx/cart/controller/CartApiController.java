@@ -12,6 +12,7 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "购物车接口")
@@ -113,5 +114,14 @@ public class CartApiController {
 
         OrderConfirmVo orderTradeVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
         return Result.ok(orderTradeVo);
+    }
+
+
+    //获取当前用户购物车选中购物项
+    @ApiOperation("获取当前用户购物车选中购物项")
+    @GetMapping("inner/getCartCheckedList/{userId}")
+    public List<CartInfo> getCartCheckedList(@PathVariable("userId") Long userId){
+        List<CartInfo> cartInfoList = cartInfoService.getCartCheckedList(userId);
+        return cartInfoList;
     }
 }

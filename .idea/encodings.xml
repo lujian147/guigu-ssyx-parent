@@ -13,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/model/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-client/service-activity-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-client/service-activity-client/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-client/service-cart-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-client/service-cartl-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-client/service-product-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-client/service-product-client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-client/service-search-client/src/main/java" charset="UTF-8" />

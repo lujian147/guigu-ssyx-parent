@@ -30,4 +30,7 @@ public interface CartInfoService {
 
     //批量选中
     void batchCheckCart(List<Long> skuIdList, Long userId, Integer isChecked);
+
+    //获取当前用户购物车选中购物项
+    List<CartInfo> getCartCheckedList(Long userId);
 }

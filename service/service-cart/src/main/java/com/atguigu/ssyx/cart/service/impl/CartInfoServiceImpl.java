@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 //添加商品到购物车
 //添加内容：当前登录用户id,商品id,商品数量num
@@ -193,6 +194,20 @@ public class CartInfoServiceImpl implements CartInfoService {
             boundHashOperations.put(cartInfo.getSkuId().toString(),cartInfo);
         });
         this.setCartKeyExpire(cartKey);
+    }
+
+    //获取当前用户购物车选中购物项
+    @Override
+    public List<CartInfo> getCartCheckedList(Long userId) {
+        String cartKey = this.getCartKey(userId);
+        BoundHashOperations<String,String,CartInfo> boundHashOperations = redisTemplate.boundHashOps(cartKey);
+        List<CartInfo> cartInfoList = boundHashOperations.values();
+        //遍历
+        List<CartInfo> cartInfoListNew = cartInfoList.stream().filter(cartInfo -> {
+            return cartInfo.getIsChecked().intValue() == 1;
+        }).collect(Collectors.toList());
+
+        return cartInfoListNew;
     }
 
     //设置key过期时间

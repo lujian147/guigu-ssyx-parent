@@ -40,8 +40,6 @@ public class OrderInfoController {
     @ApiOperation("生成订单")
     @PostMapping("auth/submitOrder")
     public Result submitOrder(@RequestBody OrderSubmitVo orderParamVo) {
-        // 获取到用户Id
-        Long userId = AuthContextHolder.getUserId();
         Long orderId = orderInfoService.submitOrder(orderParamVo);
         return Result.ok(orderId);
     }
