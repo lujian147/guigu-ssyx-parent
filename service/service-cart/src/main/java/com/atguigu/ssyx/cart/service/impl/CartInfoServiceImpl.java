@@ -210,6 +210,25 @@ public class CartInfoServiceImpl implements CartInfoService {
         return cartInfoListNew;
     }
 
+
+    //根据userId删除选中购物车记录
+    @Override
+    public void deleteCartChecked(Long userId) {
+        //根据userId查询选中购物车记录
+        List<CartInfo> cartCheckedList = this.getCartCheckedList(userId);
+        //查询list集合遍历，得到skuIdList
+        List<Long> skuIdList = cartCheckedList.stream().map(item -> item.getSkuId()).collect(Collectors.toList());
+        //构建redis得key值  hash类型
+        String cartKey = this.getCartKey(userId);
+        //根据key查询filed-value结构
+        BoundHashOperations<String,String,CartInfo> boundHashOperations = redisTemplate.boundHashOps(cartKey);
+        //根据filed值删除redis中得记录
+        skuIdList.forEach(skuId ->{
+            boundHashOperations.delete(skuId.toString());
+        });
+
+    }
+
     //设置key过期时间
     private void setCartKeyExpire(String key){
         redisTemplate.expire(key,RedisConst.USER_CART_EXPIRE, TimeUnit.SECONDS);

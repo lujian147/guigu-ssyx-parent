@@ -15,13 +15,17 @@ import com.atguigu.ssyx.model.activity.CouponInfo;
 import com.atguigu.ssyx.model.order.CartInfo;
 import com.atguigu.ssyx.model.order.OrderInfo;
 import com.atguigu.ssyx.model.order.OrderItem;
+import com.atguigu.ssyx.mq.constant.MqConst;
+import com.atguigu.ssyx.mq.service.RabbitService;
 import com.atguigu.ssyx.order.mapper.OrderInfoMapper;
+import com.atguigu.ssyx.order.mapper.OrderItemMapper;
 import com.atguigu.ssyx.order.service.OrderInfoService;
 import com.atguigu.ssyx.vo.order.CartInfoVo;
 import com.atguigu.ssyx.vo.order.OrderConfirmVo;
 import com.atguigu.ssyx.vo.order.OrderSubmitVo;
 import com.atguigu.ssyx.vo.product.SkuStockLockVo;
 import com.atguigu.ssyx.vo.user.LeaderAddressVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.j2objc.annotations.AutoreleasePool;
 import jodd.util.StringUtil;
@@ -65,6 +69,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Autowired
     private ProductFeignClient productFeignClient;
+
+    @Autowired
+    private RabbitService rabbitService;
+
+    @Autowired
+    private OrderItemMapper orderItemMapper;
 
 //    确认订单
     @Override
@@ -139,7 +149,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         //5.1 向两张表中添加数据 order_info 和order_item
         Long orderId = this.saveOrder(orderParamVo,cartInfoList);
 
-        //TODO 完善
+        //下单完成，删除购物车记录
+        //发送消息
+        rabbitService.sendMessage(MqConst.EXCHANGE_ORDER_DIRECT,MqConst.ROUTING_DELETE_CART,orderParamVo.getUserId());
 
         //6. 返回订单id
         return orderId;
@@ -405,6 +417,15 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     //    获取订单详情
     @Override
     public OrderInfo getOrderInfoById(Long orderId) {
-        return null;
+        //根据orderId查询订单基本信息
+        OrderInfo orderInfo = baseMapper.selectById(orderId);
+//        根据orderId查询订单中得所有订单项列表
+        List<OrderItem> orderItemList = orderItemMapper.selectList(
+                new LambdaQueryWrapper<OrderItem>()
+                        .eq(OrderItem::getOrderId, orderId)
+        );
+        //查询所有订单封装到每个订单对象里面
+        orderInfo.setOrderItemList(orderItemList);
+        return orderInfo;
     }
 }
