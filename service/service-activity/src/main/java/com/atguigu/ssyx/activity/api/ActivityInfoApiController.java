@@ -1,8 +1,11 @@
 package com.atguigu.ssyx.activity.api;
 
 import com.atguigu.ssyx.activity.service.ActivityInfoService;
+import com.atguigu.ssyx.activity.service.CouponInfoService;
 import com.atguigu.ssyx.model.activity.ActivityInfo;
+import com.atguigu.ssyx.model.activity.CouponInfo;
 import com.atguigu.ssyx.model.order.CartInfo;
+import com.atguigu.ssyx.vo.order.CartInfoVo;
 import com.atguigu.ssyx.vo.order.OrderConfirmVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +23,9 @@ public class ActivityInfoApiController {
 
     @Autowired
     private ActivityInfoService activityInfoService;
+
+    @Autowired
+    private CouponInfoService couponInfoService;
 
 
     //    根据skuId列表获取促销信息
@@ -43,5 +49,30 @@ public class ActivityInfoApiController {
     @PostMapping("inner/findCartActivityAndCoupon/{userId}")
     public OrderConfirmVo findCartActivityAndCoupon(@RequestBody List<CartInfo> cartInfoList, @PathVariable("userId") Long userId) {
         return activityInfoService.findCartActivityAndCoupon(cartInfoList, userId);
+    }
+
+
+    //获取购物车对应规则数据
+    @ApiOperation("获取购物车对应规则数据")
+    @GetMapping("inner/findCartActivityList")
+    public List<CartInfoVo> findCartActivityList(@RequestBody List<CartInfo> cartInfoList){
+        return activityInfoService.findCartActivityList(cartInfoList);
+    };
+
+    //获取购物车对应优惠卷
+    @ApiOperation("获取购物车对应优惠卷")
+    @GetMapping("inner/findRangeSkuIdList/{couponId}")
+    public CouponInfo findRangeSkuIdList(@RequestBody List<CartInfo> cartInfoList,
+                                         @PathVariable("couponId") Long couponId){
+        return couponInfoService.findRangeSkuIdList(cartInfoList,couponId);
+    }
+
+    //更新优惠卷使用状态
+    @GetMapping("inner/updateCouponInfoUserStatus/{couponId}/{userId}/{orderId}")
+    public Boolean updateCouponInfoUserStatus(@PathVariable Long couponId,
+                                              @PathVariable Long userId,
+                                              @PathVariable Long orderId){
+        couponInfoService.updateCouponInfoUserStatus(couponId,userId,orderId);
+        return true;
     }
 }

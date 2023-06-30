@@ -8,6 +8,7 @@ import com.atguigu.ssyx.activity.service.CouponInfoService;
 import com.atguigu.ssyx.activity.service.CouponRangeService;
 import com.atguigu.ssyx.client.product.ProductFeignClient;
 import com.atguigu.ssyx.enums.CouponRangeType;
+import com.atguigu.ssyx.enums.CouponStatus;
 import com.atguigu.ssyx.model.activity.CouponInfo;
 import com.atguigu.ssyx.model.activity.CouponRange;
 import com.atguigu.ssyx.model.activity.CouponUse;
@@ -15,6 +16,7 @@ import com.atguigu.ssyx.model.order.CartInfo;
 import com.atguigu.ssyx.model.product.Category;
 import com.atguigu.ssyx.model.product.SkuInfo;
 import com.atguigu.ssyx.vo.activity.CouponRuleVo;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -116,6 +118,48 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         }
         //6.返回List<CouponInfo>
         return userAllCouponInfoList;
+    }
+
+    //获取购物车对应优惠卷
+    @Override
+    public CouponInfo findRangeSkuIdList(List<CartInfo> cartInfoList, Long couponId) {
+        //根据优惠卷id基本信息查询
+        CouponInfo couponInfo = baseMapper.selectById(couponId);
+        if (couponInfo == null){
+            return null;
+        }
+        //根据couponId查询对应得range数据
+        List<CouponRange> couponRangeList = couponRangeMapper.selectList(
+                new LambdaQueryWrapper<CouponRange>()
+                        .eq(CouponRange::getCouponId, couponId)
+        );
+        //对应得sku信息
+        Map<Long, List<Long>> couponIdToSkuIdMap = this.findCouponIdToSkuIdMap(cartInfoList, couponRangeList);
+        //遍历map,得到value值，封装到couponInfo对象
+        Set<Map.Entry<Long, List<Long>>> entrySet = couponIdToSkuIdMap.entrySet();
+        Iterator<Map.Entry<Long, List<Long>>> iterator = entrySet.iterator();
+        while (iterator.hasNext()){
+            Map.Entry<Long, List<Long>> entry = iterator.next();
+            List<Long> skuIdList = entry.getValue();
+            couponInfo.setSkuIdList(skuIdList);
+        }
+        return couponInfo;
+    }
+
+    //更新优惠卷使用状态
+    @Override
+    public void updateCouponInfoUserStatus(Long couponId, Long userId, Long orderId) {
+        //根据couponId查询优惠卷信息
+        CouponUse couponUse = couponUseMapper.selectOne(
+                new LambdaQueryWrapper<CouponUse>()
+                        .eq(CouponUse::getCouponId, couponId)
+                        .eq(CouponUse::getUserId, couponId)
+                        .eq(CouponUse::getOrderId, orderId)
+        );
+        //设置修改值
+        couponUse.setCouponStatus(CouponStatus.USED);
+        //调用方法修改
+        couponUseMapper.updateById(couponUse);
     }
 
 
