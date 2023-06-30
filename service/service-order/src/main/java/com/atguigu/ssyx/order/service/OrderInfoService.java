@@ -24,4 +24,7 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
 //    获取订单详情
     OrderInfo getOrderInfoById(Long orderId);
+
+    //根据orderNo查询订单信息
+    OrderInfo getOrderInfoByOrderNo(String orderNo);
 }
