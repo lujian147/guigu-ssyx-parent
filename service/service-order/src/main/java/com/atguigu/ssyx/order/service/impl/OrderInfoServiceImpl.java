@@ -252,7 +252,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         BigDecimal commissionAmount = orderInfo.getTotalAmount().multiply(profitRate);
         orderInfo.setCommissionAmount(commissionAmount);
 
+        //添加数据到订单基本信息表
         baseMapper.insert(orderInfo);
+
+        //添加订单里面订单项
+        orderItemList.forEach(orderItem -> {
+            orderItem.setOrderId(orderInfo.getId());
+            orderItemMapper.insert(orderItem);
+        });
 
         //如果当前订单使用了优惠卷，更新优惠卷状态
         if (orderInfo.getCouponId() != null){

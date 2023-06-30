@@ -54,20 +54,21 @@ public class ActivityInfoApiController {
 
     //获取购物车对应规则数据
     @ApiOperation("获取购物车对应规则数据")
-    @GetMapping("inner/findCartActivityList")
+    @PostMapping("inner/findCartActivityList")
     public List<CartInfoVo> findCartActivityList(@RequestBody List<CartInfo> cartInfoList){
         return activityInfoService.findCartActivityList(cartInfoList);
     };
 
     //获取购物车对应优惠卷
     @ApiOperation("获取购物车对应优惠卷")
-    @GetMapping("inner/findRangeSkuIdList/{couponId}")
+    @PostMapping("inner/findRangeSkuIdList/{couponId}")
     public CouponInfo findRangeSkuIdList(@RequestBody List<CartInfo> cartInfoList,
                                          @PathVariable("couponId") Long couponId){
         return couponInfoService.findRangeSkuIdList(cartInfoList,couponId);
     }
 
     //更新优惠卷使用状态
+    @ApiOperation("更新优惠卷使用状态")
     @GetMapping("inner/updateCouponInfoUserStatus/{couponId}/{userId}/{orderId}")
     public Boolean updateCouponInfoUserStatus(@PathVariable Long couponId,
                                               @PathVariable Long userId,

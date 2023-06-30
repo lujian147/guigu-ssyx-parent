@@ -37,12 +37,12 @@ public interface ActivityFeignClient {
 
     //获取购物车对应规则数据
     @ApiOperation("获取购物车对应规则数据")
-    @GetMapping("/api/activity/inner/findCartActivityList")
+    @PostMapping("/api/activity/inner/findCartActivityList")
     public List<CartInfoVo> findCartActivityList(@RequestBody List<CartInfo> cartInfoList);
 
     //获取购物车对应优惠卷
     @ApiOperation("获取购物车对应优惠卷")
-    @GetMapping("/api/activity/inner/fondRangeSkuIdList/{couponId}")
+    @PostMapping("/api/activity/inner/fondRangeSkuIdList/{couponId}")
     public CouponInfo findRangeSkuIdList(@RequestBody List<CartInfo> cartInfoList,
                                          @PathVariable("couponId") Long couponId);
 
